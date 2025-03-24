@@ -7,42 +7,71 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
         }
         .header {
             background-color: #0077b6;
             color: white;
             text-align: center;
-            padding: 15px 0;
-            font-size: 24px;
-            font-weight: bold;
+            padding: 10px;
+            font-size: 20px;
         }
         .descripcion {
-            padding: 15px;
+            padding: 10px;
             text-align: center;
             background-color: #f0f0f0;
-            font-size: 12px;
+        }
+        .content {
+            flex-grow: 1;
+            position: relative;
         }
         iframe {
             width: 100%;
-            height: calc(100% - 120px); /* Ajuste dinámico del tamaño del mapa */
+            height: 100%;
             border: none;
+        }
+        .footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #1E90FF;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+
     <div class="header">
-        La gaviota lechuza: zona de alimentación de las gaviotas Creagrus furcatus en Galápagos en 2009
+        <h1>La gaviota lechuza: zona de alimentación de las gaviotas Creagrus furcatus en Galápagos (2009)</h1>
     </div>
+
     <div class="descripcion">
-        <p>Este mapa interactivo muestra las zonas de recorrido recorridos de 3 gaviotas de cola 
+        <p>Este mapa interactivo muestra las zonas de recorrido de 3 gaviotas de cola 
             bifurcada (Creagrus furcatus) en una de las islas Galápagos en un día del año 2009.
             La gaviota de cola bifurcada se adentra en el mar solo de noche.
-            Van en busca de alimentación a una distancia de 19 a 103 km de los nidos durante. 
+            Van en busca de alimentación a una distancia de 19 a 103 km de los nidos. 
             Durante su estancia en el mar, las gaviotas dedicaron aproximadamente una cuarta parte de su tiempo a desplazamientos,
             y la mitad a búsquedas restringidas a un área específica.</p>
     </div>
-    <iframe src="mapa_gull.html"></iframe>
+
+    <div class="content">
+        <iframe src="mapa_gull.html"></iframe>
+    </div>
+
+    <div class="footer">
+        <h3>Detalles</h3>
+        <p><b>Datos de:</b> <a href="https://datarepository.movebank.org/entities/datapackage/9c8e9ffc-66ab-4874-b1ab-d7144761c652" target="_blank">MOVEBANK data</a></p>
+        <p><b>Código fuente:</b> <a href="https://github.com/juleneetac/vd-pec2-convexhull" target="_blank">Repositorio GitHub</a></p>
+        <p><b>Publicadas:</b> 24 mar 2025 | <b>Actualizado:</b> 24 mar 2025</p>
+    </div>
+
 </body>
 </html>

@@ -8,23 +8,35 @@
             padding: 0;
             height: 100%;
             overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            background-color: #0077b6;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .descripcion {
+            padding: 15px;
+            text-align: center;
+            background-color: #f0f0f0;
+            font-size: 16px;
         }
         iframe {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 120px); /* Ajuste dinámico del tamaño del mapa */
             border: none;
-        }
-        .descripcion {
-            padding: 10px;
-            text-align: center;
-            background-color: #f0f0f0; /* Un fondo gris claro para la descripción */
         }
     </style>
 </head>
 <body>
-    <h1>Mapa de Recorridos de Gull</h1>
+    <div class="header">
+        Mapa de Recorridos de Aves Gull
+    </div>
     <div class="descripcion">
-        <p>Esta página muestra un mapa interactivo con los recorridos de las aves Gull, permitiendo visualizar sus movimientos y patrones de desplazamiento.</p>
+        <p>Este mapa interactivo muestra los recorridos migratorios de las aves Gull. Explora sus trayectorias y patrones de movimiento a lo largo del tiempo.</p>
     </div>
     <iframe src="mapa_gull.html"></iframe>
 </body>

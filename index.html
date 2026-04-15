@@ -1,77 +1,170 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Mapa Gull</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Mystery Riddle</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        :root {
+            --primary-color: #d63384; /* A soft pink/rose color */
+            --secondary-color: #6610f2;
+            --bg-color: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
-        .header {
-            background-color: #0077b6;
-            color: white;
+
+        #game-box {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
             text-align: center;
-            padding: 10px;
-            font-size: 20px;
+            max-width: 450px;
+            width: 90%;
         }
-        .descripcion {
-            padding: 10px;
-            text-align: center;
-            background-color: #f0f0f0;
+
+        .riddle-text {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            min-height: 80px;
         }
-        .content {
-            flex-grow: 1;
-            position: relative;
-        }
-        iframe {
+
+        input[type="text"] {
             width: 100%;
-            height: 100%;
-            border: none;
+            padding: 12px;
+            margin-bottom: 1.5rem;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
         }
-        .footer {
-            background-color: #222;
+
+        input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        button {
+            background: var(--primary-color);
             color: white;
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s, background 0.3s;
         }
-        .footer a {
-            color: #1E90FF;
-            text-decoration: none;
+
+        button:hover {
+            background: #b82a6f;
+            transform: translateY(-2px);
         }
-        .footer a:hover {
-            text-decoration: underline;
+
+        #feedback {
+            margin-top: 1.5rem;
+            font-weight: 600;
+            height: 20px;
         }
+
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="header">
-        <h1>La gaviota lechuza: zona de alimentación de las gaviotas Creagrus furcatus en Galápagos (2008)</h1>
+<div id="game-box">
+    <div id="quiz-content">
+        <h2 id="header">The Riddle</h2>
+        <p id="riddle-p" class="riddle-text"></p>
+        
+        <input type="text" id="user-input" placeholder="Type your answer here...">
+        <button id="action-btn" onclick="processStep()">Send</button>
+        
+        <p id="feedback"></p>
     </div>
 
-    <div class="descripcion">
-        <p>Este mapa interactivo muestra las zonas de recorrido de 3 gaviotas de cola 
-            bifurcada (Creagrus furcatus) en una de las islas Galápagos en un día del año 2008.
-            La gaviota de cola bifurcada se adentra en el mar solo de noche.
-            Van en busca de alimentación a una distancia de 19 a 103 km de los nidos. 
-            Durante su estancia en el mar, las gaviotas dedicaron aproximadamente una cuarta parte de su tiempo a desplazamientos,
-            y la mitad a búsquedas restringidas a un área específica.</p>
+    <div id="final-screen" class="hidden">
+        <h1 style="color: var(--primary-color);">✨ Correct! ✨</h1>
+        <p>You have discovered the secret.</p>
     </div>
+</div>
 
-    <div class="content">
-        <iframe src="mapa_gull.html"></iframe>
-    </div>
+<script>
+    const riddles = [
+        "It is far too beautiful to not want to see it every single day.",
+        "Their eyes shine like diamonds when the light hits them.",
+        "They have one of the best smiles you will ever see.",
+        "Last question: Who is the person described in these riddles?"
+    ];
 
-    <div class="footer">
-        <h3>Detalles</h3>
-        <p><b>Datos de:</b> <a href="https://datarepository.movebank.org/entities/datapackage/9c8e9ffc-66ab-4874-b1ab-d7144761c652" target="_blank">MOVEBANK data</a></p>
-        <p><b>Código fuente:</b> <a href="https://github.com/juleneetac/vd-pec2-convexhull" target="_blank">Repositorio GitHub</a></p>
-        <p><b>Publicado:</b> 30 mar 2025 | <b>Actualizado:</b> 30 mar 2025</p>
-    </div>
+    let currentStep = 0;
+
+    const riddleP = document.getElementById('riddle-p');
+    const userInput = document.getElementById('user-input');
+    const feedback = document.getElementById('feedback');
+    const quizContent = document.getElementById('quiz-content');
+    const finalScreen = document.getElementById('final-screen');
+
+    // Show first riddle
+    riddleP.innerText = riddles[currentStep];
+
+    function processStep() {
+        const value = userInput.value.trim().toLowerCase();
+
+        // The logic: Only the last step requires the specific word "gemma"
+        if (currentStep < riddles.length - 1) {
+            // For the first 3 riddles, we just move forward on "Send" 
+            // (Or you can add specific answers for those too)
+            currentStep++;
+            riddleP.innerText = riddles[currentStep];
+            userInput.value = "";
+            feedback.innerText = "";
+        } else {
+            // Final validation for "gemma"
+            if (value === "gemma") {
+                showSuccess();
+            } else {
+                showError();
+            }
+        }
+    }
+
+    function showSuccess() {
+        feedback.className = "success";
+        feedback.innerText = "Correct! You found her.";
+        setTimeout(() => {
+            quizContent.classList.add('hidden');
+            finalScreen.classList.remove('hidden');
+        }, 1000);
+    }
+
+    function showError() {
+        feedback.className = "error";
+        feedback.innerText = "Wrong answer. Try again!";
+        userInput.value = "";
+        userInput.focus();
+    }
+
+    // Allow pressing "Enter" key to submit
+    userInput.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            processStep();
+        }
+    });
+</script>
 
 </body>
 </html>

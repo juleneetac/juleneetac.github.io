@@ -1,167 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Mystery Riddle</title>
+    <title>El Enigma</title>
     <style>
         :root {
-            --primary-color: #d63384; /* A soft pink/rose color */
-            --secondary-color: #6610f2;
-            --bg-color: #f8f9fa;
+            --color-primario: #8e44ad;
+            --color-secundario: #f39c12;
+            --fondo: #fdf2f2;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--fondo);
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
         }
 
-        #game-box {
+        .contenedor {
             background: white;
             padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 450px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
             width: 90%;
+            text-align: center;
         }
 
-        .riddle-text {
-            font-size: 1.2rem;
-            color: #444;
+        h1 {
+            color: var(--color-primario);
+            margin-bottom: 1.5rem;
+        }
+
+        .pistas {
+            text-align: left;
+            background: #fffafa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--color-primario);
             margin-bottom: 2rem;
-            line-height: 1.6;
-            min-height: 80px;
+        }
+
+        .pista-item {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1rem;
+            font-style: italic;
+            line-height: 1.4;
         }
 
         input[type="text"] {
             width: 100%;
             padding: 12px;
-            margin-bottom: 1.5rem;
-            border: 2px solid #eee;
-            border-radius: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
             font-size: 1rem;
             box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--primary-color);
+            margin-bottom: 1rem;
             outline: none;
         }
 
+        input:focus {
+            border-color: var(--color-primario);
+        }
+
         button {
-            background: var(--primary-color);
+            background-color: var(--color-primario);
             color: white;
             border: none;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-size: 1rem;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1.1rem;
             cursor: pointer;
             width: 100%;
-            transition: transform 0.2s, background 0.3s;
+            transition: 0.3s;
         }
 
         button:hover {
-            background: #b82a6f;
-            transform: translateY(-2px);
+            background-color: #7d3c98;
         }
 
-        #feedback {
+        #mensaje {
             margin-top: 1.5rem;
-            font-weight: 600;
-            height: 20px;
+            font-weight: bold;
+            min-height: 20px;
         }
 
-        .success { color: #28a745; }
-        .error { color: #dc3545; }
-        .hidden { display: none; }
+        .error { color: #e74c3c; }
+        .exito { color: #27ae60; }
+        .oculto { display: none; }
     </style>
 </head>
 <body>
 
-<div id="game-box">
-    <div id="quiz-content">
-        <h2 id="header">The Riddle</h2>
-        <p id="riddle-p" class="riddle-text"></p>
-        
-        <input type="text" id="user-input" placeholder="Type your answer here...">
-        <button id="action-btn" onclick="processStep()">Send</button>
-        
-        <p id="feedback"></p>
+<div class="contenedor" id="pantalla-juego">
+    <h1>¿Quién es?</h1>
+    
+    <div class="pistas">
+        <div class="pista-item">✨ Es demasiado bello/a para no querer verlo/a cada día.</div>
+        <div class="pista-item">✨ Tiene un brillo en sus ojos que ni los diamantes mas brillantes.</div>
+        <div class="pista-item">✨ Tiene una de las mejores sonrisas que vas a ver.</div>
+        <div class="pista-item">✨ Última pero no menos importante, si pudiera, viviría en el mar.</div>
     </div>
 
-    <div id="final-screen" class="hidden">
-        <h1 style="color: var(--primary-color);">✨ Correct! ✨</h1>
-        <p>You have discovered the secret.</p>
-    </div>
+    <p>Adivina el nombre para continuar:</p>
+    <input type="text" id="respuesta" placeholder="Escribe el nombre aquí...">
+    <button onclick="validar()">Enviar</button>
+    
+    <p id="mensaje"></p>
+</div>
+
+<div class="contenedor oculto" id="pantalla-final">
+    <h1 class="exito">¡Correcto!</h1>
+    <p>Has resuelto la adivinanza. La respuesta es <strong>Gemma</strong>.</p>
 </div>
 
 <script>
-    const riddles = [
-        "It is far too beautiful to not want to see it every single day.",
-        "Their eyes shine like diamonds when the light hits them.",
-        "They have one of the best smiles you will ever see.",
-        "Last question: Who is the person described in these riddles?"
-    ];
+    function validar() {
+        const input = document.getElementById('respuesta');
+        const mensaje = document.getElementById('mensaje');
+        const pantallaJuego = document.getElementById('pantalla-juego');
+        const pantallaFinal = document.getElementById('pantalla-final');
+        
+        // Convertimos a minúsculas para que no importe cómo lo escriba
+        const valor = input.value.trim().toLowerCase();
 
-    let currentStep = 0;
-
-    const riddleP = document.getElementById('riddle-p');
-    const userInput = document.getElementById('user-input');
-    const feedback = document.getElementById('feedback');
-    const quizContent = document.getElementById('quiz-content');
-    const finalScreen = document.getElementById('final-screen');
-
-    // Show first riddle
-    riddleP.innerText = riddles[currentStep];
-
-    function processStep() {
-        const value = userInput.value.trim().toLowerCase();
-
-        // The logic: Only the last step requires the specific word "gemma"
-        if (currentStep < riddles.length - 1) {
-            // For the first 3 riddles, we just move forward on "Send" 
-            // (Or you can add specific answers for those too)
-            currentStep++;
-            riddleP.innerText = riddles[currentStep];
-            userInput.value = "";
-            feedback.innerText = "";
+        if (valor === "gemma") {
+            mensaje.className = "exito";
+            mensaje.innerText = "¡Acertaste!";
+            
+            // Pequeña pausa antes de mostrar la pantalla final
+            setTimeout(() => {
+                pantallaJuego.classList.add('oculto');
+                pantallaFinal.classList.remove('oculto');
+            }, 800);
+            
         } else {
-            // Final validation for "gemma"
-            if (value === "gemma") {
-                showSuccess();
-            } else {
-                showError();
-            }
+            mensaje.className = "error";
+            mensaje.innerText = "Nombre incorrecto. ¡Vuelve a intentarlo!";
+            input.value = ""; // Limpia el cuadro de texto
+            input.focus();    // Pone el cursor listo para escribir de nuevo
         }
     }
 
-    function showSuccess() {
-        feedback.className = "success";
-        feedback.innerText = "Correct! You found her.";
-        setTimeout(() => {
-            quizContent.classList.add('hidden');
-            finalScreen.classList.remove('hidden');
-        }, 1000);
-    }
-
-    function showError() {
-        feedback.className = "error";
-        feedback.innerText = "Wrong answer. Try again!";
-        userInput.value = "";
-        userInput.focus();
-    }
-
-    // Allow pressing "Enter" key to submit
-    userInput.addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            processStep();
+    // Permitir enviar con la tecla Enter
+    document.getElementById('respuesta').addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+            validar();
         }
     });
 </script>

@@ -1,163 +1,77 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Enigma</title>
+    <title>Mapa Gull</title>
     <style>
-        :root {
-            --color-primario: #8e44ad;
-            --color-secundario: #f39c12;
-            --fondo: #fdf2f2;
-        }
-
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--fondo);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        body, html {
             margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
         }
-
-        .contenedor {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-        }
-
-        h1 {
-            color: var(--color-primario);
-            margin-bottom: 1.5rem;
-        }
-
-        .pistas {
-            text-align: left;
-            background: #fffafa;
-            padding: 1.5rem;
-            border-radius: 10px;
-            border-left: 5px solid var(--color-primario);
-            margin-bottom: 2rem;
-        }
-
-        .pista-item {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 1rem;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            box-sizing: border-box;
-            margin-bottom: 1rem;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: var(--color-primario);
-        }
-
-        button {
-            background-color: var(--color-primario);
+        .header {
+            background-color: #0077b6;
             color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-size: 1.1rem;
-            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+            font-size: 20px;
+        }
+        .descripcion {
+            padding: 10px;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        .content {
+            flex-grow: 1;
+            position: relative;
+        }
+        iframe {
             width: 100%;
-            transition: 0.3s;
+            height: 100%;
+            border: none;
         }
-
-        button:hover {
-            background-color: #7d3c98;
+        .footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
         }
-
-        #mensaje {
-            margin-top: 1.5rem;
-            font-weight: bold;
-            min-height: 20px;
+        .footer a {
+            color: #1E90FF;
+            text-decoration: none;
         }
-
-        .error { color: #e74c3c; }
-        .exito { color: #27ae60; }
-        .oculto { display: none; }
+        .footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
 
-<div class="contenedor" id="pantalla-juego">
-    <h1>¿Quién es?</h1>
-    
-    <div class="pistas">
-        <div class="pista-item">✨ Es demasiado bello/a para no querer verlo/a cada día.</div>
-        <div class="pista-item">✨ Tiene un brillo en sus ojos que ni los diamantes mas brillantes.</div>
-        <div class="pista-item">✨ Tiene una de las mejores sonrisas que vas a ver.</div>
-        <div class="pista-item">✨ Última pero no menos importante, si pudiera, viviría en el mar.</div>
+    <div class="header">
+        <h1>La gaviota lechuza: zona de alimentación de las gaviotas Creagrus furcatus en Galápagos (2008)</h1>
     </div>
 
-    <p>Adivina el nombre para continuar:</p>
-    <input type="text" id="respuesta" placeholder="Escribe el nombre aquí...">
-    <button onclick="validar()">Enviar</button>
-    
-    <p id="mensaje"></p>
-</div>
+    <div class="descripcion">
+        <p>Este mapa interactivo muestra las zonas de recorrido de 3 gaviotas de cola 
+            bifurcada (Creagrus furcatus) en una de las islas Galápagos en un día del año 2008.
+            La gaviota de cola bifurcada se adentra en el mar solo de noche.
+            Van en busca de alimentación a una distancia de 19 a 103 km de los nidos. 
+            Durante su estancia en el mar, las gaviotas dedicaron aproximadamente una cuarta parte de su tiempo a desplazamientos,
+            y la mitad a búsquedas restringidas a un área específica.</p>
+    </div>
 
-<div class="contenedor oculto" id="pantalla-final">
-    <h1 class="exito">¡Correcto Yemmeto!</h1>
-    <p>Has resuelto la adivinanza. La respuesta es <strong>Gemma</strong>.</p>
-    
-    <img src="https://hips.hearstapps.com/digitalspyuk.cdnds.net/18/11/1521221103-greatest-showman.gif?crop=0.7555555555555555xw:1xh;center,top&resize=1200:*" 
-         alt="¡Celebración!" 
-         style="width: 100%; max-width: 300px; border-radius: 15px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">
-</div>
+    <div class="content">
+        <iframe src="mapa_gull.html"></iframe>
+    </div>
 
-<script>
-    function validar() {
-        const input = document.getElementById('respuesta');
-        const mensaje = document.getElementById('mensaje');
-        const pantallaJuego = document.getElementById('pantalla-juego');
-        const pantallaFinal = document.getElementById('pantalla-final');
-        
-        // Convertimos a minúsculas para que no importe cómo lo escriba
-        const valor = input.value.trim().toLowerCase();
-
-        if (valor === "gemma") {
-            mensaje.className = "exito";
-            mensaje.innerText = "¡Acertaste!";
-            
-            // Pequeña pausa antes de mostrar la pantalla final
-            setTimeout(() => {
-                pantallaJuego.classList.add('oculto');
-                pantallaFinal.classList.remove('oculto');
-            }, 800);
-            
-        } else {
-            mensaje.className = "error";
-            mensaje.innerText = "Nombre incorrecto. ¡Vuelve a intentarlo!";
-            input.value = ""; // Limpia el cuadro de texto
-            input.focus();    // Pone el cursor listo para escribir de nuevo
-        }
-    }
-
-    // Permitir enviar con la tecla Enter
-    document.getElementById('respuesta').addEventListener("keypress", function(e) {
-        if (e.key === "Enter") {
-            validar();
-        }
-    });
-</script>
+    <div class="footer">
+        <h3>Detalles</h3>
+        <p><b>Datos de:</b> <a href="https://datarepository.movebank.org/entities/datapackage/9c8e9ffc-66ab-4874-b1ab-d7144761c652" target="_blank">MOVEBANK data</a></p>
+        <p><b>Código fuente:</b> <a href="https://github.com/juleneetac/vd-pec2-convexhull" target="_blank">Repositorio GitHub</a></p>
+        <p><b>Publicado:</b> 30 mar 2025 | <b>Actualizado:</b> 30 mar 2025</p>
+    </div>
 
 </body>
 </html>
